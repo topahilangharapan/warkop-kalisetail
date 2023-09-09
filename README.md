@@ -2,7 +2,7 @@
 **Selamat datang di warkop _Stasiun Kalisetail_ (+272m)**
 
 ## Tautan Adaptable
-
+https://warkop-kalisetail.adaptable.app
 
 ## Tugas 2
 - [x] **Membuat sebuah proyek Django baru.**
@@ -47,11 +47,11 @@
 - [x] **Membuat sebuah routing pada `urls.py` aplikasi `main` untuk memetakan fungsi yang telah dibuat pada `views.py`.**
       
   Konfigurasikan routing URL aplikasi `main` yang telah kita buat tadi dengan membuat file `urls.py` pada direktori `main`, file ini yang akan mengatur rute URL milik aplikasi `main`. Impor fungsi `path` dari `django.urls`, fungsi ini berguna untuk membuat URL. Impor juga fungsi `show_main` dari `main.views` untuk menampilkan tampilan ketika URL terkait diakses. Buat nama `app_name` untuk memberikan nama unik pada pola URL pada aplikasi. Gunakan fungsi `show_main` untuk menampilkan URL terkait ketika diakses dengan membuat variabel `urlpatterns` menjadi:
-```
-urlpatterns = [
-    path('', show_main, name='show_main'),
-]
-```
+   ```
+   urlpatterns = [
+       path('', show_main, name='show_main'),
+   ]
+   ```
 
 - [x] **Melakukan deployment ke Adaptable terhadap aplikasi yang sudah dibuat sehingga nantinya dapat diakses oleh teman-temanmu melalui Internet.**
 
