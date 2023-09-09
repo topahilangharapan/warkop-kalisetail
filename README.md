@@ -60,10 +60,12 @@ urlpatterns = [
 - [x] **Membuat sebuah `README.md` yang berisi tautan menuju aplikasi Adaptable yang sudah di-deploy, serta jawaban dari beberapa pertanyaan berikut.**
 
   * **Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.**
-     
+    
+     <img width="841" alt="image" src="https://github.com/topahilangharapan/warkop_kalisetail/assets/117751625/dd394a74-3496-499f-a4cf-c09a8765f74d">
+
     Penjelasan:
-    1. `Client (browser)` mengirimkan HTTP request ke URL tertentu
-    2. `urls.py` mencocokkan URL yang diterima dari request dengan pola URL yang didefinisikan dalam file ini. Jika URL cocok dengan salah satu pola yang ada, `urls.py` mengarahkan request ke fungsi view yang sesuai.
+    1. `Client (browser)` mengirimkan HTTP request ke URL tertentu dan ditangkap oleh `urls.py`
+    2. `urls.py` mencocokkan URL yang diterima dari request dengan pola URL yang didefinisikan dalam file ini. Jika URL cocok dengan salah satu pola yang ada, `urls.py` mengarahkan request ke `views.py` yang sesuai.
     3. `views.py` dapat berinteraksi dengan `models.py` (jika diperlukan) untuk mengambil atau memanipulasi data dari database.
     4. `models.py` mengembalikan data dari database ke `views.py`
     5. `views.py` akan merender (memproses) berkas `HTML` dengan menggunakan data yang telah diperoleh dari `models.py`
