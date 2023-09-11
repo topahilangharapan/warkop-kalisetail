@@ -7,4 +7,7 @@ class Product(models.Model):
     amount = models.IntegerField()
     description = models.TextField()
     price = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.name}'
     
