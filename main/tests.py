@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.test import TestCase, Client
+from django.urls import reverse
 
 from main.models import Product
 # Create your tests here.
@@ -14,15 +15,18 @@ class mainTest(TestCase):
         response = Client().get('/main/')
         self.assertTemplateUsed(response, 'main.html')
 
-    def set_up_test_data(cls):
-        Product.objects.create(name='Kopi Hitam w/Ampas', amount=5, description='Kopi Mantab', price=4000)
+    def create_product(self, name='Kopi Hitam w/Ampas', amount=5, description='Kopi Mantab', price=4000):
+        return Product.objects.create(name=name, amount=amount, description=description, price=price)
 
-    def test_name_label(self):
-        product = Product
-        field_label = product._meta.get_field('name').verbose_name
-        self.assertEqual(field_label, 'name')
+    def test_product_creation(self):
+        p = self.create_product()
+        self.assertTrue(isinstance(p, Product))
+        self.assertEqual(p.__str__(), p.name)
 
-    def test_name_max_length(self):
-        product = Product()
-        max_length = product._meta.get_field('name').max_length
+    def test_product_name_max_length(self):
+        p = self.create_product()
+        max_length = p._meta.get_field('name').max_length
         self.assertEqual(max_length, 255)
+
+    
+
