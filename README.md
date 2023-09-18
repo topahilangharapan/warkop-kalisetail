@@ -7,7 +7,7 @@ https://warkop-kalisetail.adaptable.app
 ## Tugas 2
 - [x] **Membuat sebuah proyek Django baru.**
 
-   Mengaktifkan Virtual Environment pada direktori warkop_kalisetail, hal ini dilakukan supaya kita berhati-hati saat memasang dependencies (yang berisi library, framework, atau package untuk membantu proses pengembangan) dengan         mengisolasi dependencies antara proyek proyek yang berbeda. Lalu, kita buat proyek Django dan mengonfigurasi proyek dengan mengubah `ALLOWED_HOSTS` di file `settings.py` supaya kita terdaftar menjadi host yang memiliki izin untuk mengakses aplikasi web.
+   Mengaktifkan Virtual Environment pada direktori warkop_kalisetail, hal ini dilakukan supaya kita berhati-hati saat memasang dependencies (yang berisi library, framework, atau package untuk membantu proses pengembangan) dengan mengisolasi dependencies antara proyek proyek yang berbeda. Lalu, kita buat proyek Django dan mengonfigurasi proyek dengan mengubah `ALLOWED_HOSTS` di file `settings.py` supaya kita terdaftar menjadi host yang memiliki izin untuk mengakses aplikasi web.
 
 - [x] **Membuat aplikasi dengan nama `main` pada proyek tersebut.**
 
@@ -119,3 +119,233 @@ https://warkop-kalisetail.adaptable.app
         * ViewModel adalah inti dari MVVM dan berperan sebagai penghubung antara Model dan View dengan cara yang lebih terstruktur dan terkendali dibandingkan dengan Controller dalam MVC.
       
     Perbedaan utama antara ketiga pola ini adalah cara mereka mengelola tampilan dan koneksi antara Model dan View/Template/ViewModel. MVC adalah pola yang umum digunakan dalam pengembangan tradisional, MVT adalah varian dari MVC yang digunakan dalam kerangka kerja web Django, dan MVVM adalah pola yang sering digunakan dalam pengembangan aplikasi berbasis objek, terutama di lingkungan seperti aplikasi desktop atau mobile. Pemilihan pola tergantung pada jenis aplikasi dan kerangka kerja yang digunakan.
+
+## Tugas 3
+- [x] Membuat input `form` untuk menambahkan objek model pada app sebelumnya.
+
+   Buat file di direktori `main` bernama `forms.py` lalu tambahkan `Product` (yang ada pada `models.py`) supaya isi dari form akan disimpan menjadi objek `Product` dengan meminta              `fields` yang sesuai pada `models.py`.
+   Buka file `views.py` di direktori `main` juga dan meng-import beberapa fungsi:
+   ```
+   from django.http import HttpResponseRedirect
+   from main.forms import ProductForm
+   from django.urls import reverse
+   ```
+   Lalu buat fungsi baru bernama `create_product` yang menerima parameter `request`, isi dari `create_product` adalah:
+   ```
+   def create_product(request):
+      form = ProductForm(request.POST or None)
+      
+      if form.is_valid() and request.method == "POST":
+         form.save()
+           return HttpResponseRedirect(reverse('main:show_main'))
+      
+      context = {'form': form}
+      return render(request, "create_product.html", context)
+   ```
+   `form = ProductForm(request.POST or None)` berguna untuk membuat `ProductForm` baru dengan cara memasukkan QueryDict sesuai pada input _user_ di `request.POST`. `form.is_valid()` ditambahkan supaya dapat mengecek apakah isi input di form tersebut valid atau tidak. `form.save()` berguna untuk membuat sekaligus menyimpan data dari form. `return HttpResponseRedirect(reverse('main:show_main'))` untuk me-redirect user kembali ke halaman utama setelah menyimpan data form.
+   
+ 
+- [x] Tambahkan 5 fungsi `views` untuk melihat objek yang sudah ditambahkan dalam format HTML, XML, JSON, XML by ID, dan JSON by ID.
+      
+   * **HTML**
+
+      Dalam folder `templates` di root folder dan buat file HTML baru dengan nama `base.html` sebagai template dasar yang digunakan sebagai kerangka umum untuk halaman-halaman web lainnya pada proyek. Pada `base.html` isi dengan:
+      ```
+      {% load static %}
+      <!DOCTYPE html>
+      <html lang="en">
+          <head>
+              <meta charset="UTF-8" />
+              <meta
+                  name="viewport"
+                  content="width=device-width, initial-scale=1.0"
+              />
+              {% block meta %}
+              {% endblock meta %}
+          </head>
+      
+          <body>
+              {% block content %}
+              {% endblock content %}
+          </body>
+      </html>
+      ```
+      Buka file `settings.py` yang ada di subdirektori `shopping_list` dan cari variabel `TEMPLATES` lalu tambahkan code ini supaya `base.html` data dideteksi sebagai template:
+      ```
+      'DIRS': [BASE_DIR / 'templates']
+      ```
+      Pada subdirektori `templates` yang ada di `main` ubah `main.html` menjadi:
+      ```
+      {% extends 'base.html' %}
+      
+      {% block content %}
+         <h1>Warkop Kalisetail</h1>
+         
+         <h3>Appname: </h3>
+         <p>{{ appname }}</p>
+         
+         <h5>Name:</h5>
+         <p>{{ nama }}</p>
+         
+         <h5>Kelas:</h5>
+         <p>{{ kelas }}</p>
+      {% endblock content %}
+      ```
+      Pada file `views.py` ubah fungsi `show_main` dengan menambahkan `products = Product.objects.all()` untuk mengambil seluruh objek Product yang ada di _database_ lalu tambahkan `'products': products` pada variabel `context` untuk menampilkan seluruh objek Product yang ada di _database
+      Buat file baru dengan nama `create_product.html` di direktori `main/templates`. Isi dengan kode:
+      ```
+      {% extends 'base.html' %} 
+   
+      {% block content %}
+      <h1>Add New Product</h1>
+      
+      <form method="POST">
+          {% csrf_token %}
+          <table>
+              {{ form.as_table }}
+              <tr>
+                  <td></td>
+                  <td>
+                      <input type="submit" value="Add Product"/>
+                  </td>
+              </tr>
+          </table>
+      </form>
+      
+      {% endblock %}
+      ```
+      `<form method="POST">` untuk menandakan block mana yang digunakan untuk form dengan metode POST. `{% csrf_token %}` bertanggung jawab menjadi token untuk menjaga keamanan supaya tercegah dari serangan berbahaya. `{{ form.as_table }}` untuk menampilan fields pada form yang sudah dibuat di file `forms.py` sebagai tabel. `<input type="submit" value="Add Product"/>` menjadi tombol submit untuk mengirimkan request ke view `create_product(request)`.
+      Buka file `main.html` dan tambahkan kode di dalam `{% block content %}` supaya dapat menampilkan data produk dalam bentuk tabel sekaligus tombol "Add New Product" yang akan me-redirect ke halaman form:
+      ```
+      ...
+      <table>
+          <tr>
+              <th>Name</th>
+              <th>Amount</th>
+              <th>Price</th>
+              <th>Description</th>
+          </tr>
+      
+          {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
+      
+          {% for product in products %}
+          <tr>
+              <td>{{product.name}}</td>
+              <td>{{product.amount}}</td>
+              <td>{{product.price}}</td>
+              <td>{{product.description}}</td>
+          </tr>
+          {% endfor %}
+      </table>
+      
+      <br />
+      
+      <a href="{% url 'main:create_product' %}">
+          <button>
+              Add New Product
+          </button>
+      </a>
+      
+      {% endblock content %}
+      ```
+
+   * **Serializer untuk XML dan JSON**
+     
+        Buka file `views.py` pada direktori `main` lalu impor fungsi `HttpResponse` dan fungsi `Serializer` yang digunakan untuk menerjemahkan objek model menjadi format lain (seperti XML atau JSON).
+
+   * **XML**
+
+        Buat fungsi `show_xml` yang menerima parameter _request_ dan buat variabel `data` yang akan menyimpan hasil query dari seluruh data yang ada di `Product` lalu return functionnya adalah `HttpResponse` yang berisi parameter data hasil query yang sudah diserialisasi dalam format XML dan parameter `content_type="application/xml".`.
+
+   * **JSON**
+     
+        Buka file `views.py` di folder `main` lalu buat fungsi baru bernama `show_json` dengan variabel `data` yang akan menyimpan seluruh hasil query data yang ada pada `Product`. Tambahkan return function berupa `HttpResponse` yang memiliki paramater data hasil query yang udah diserialisasi menjadi JSON dan parameter `content_type="application/json"`.
+
+   * **ID XML dan JSON**
+     
+        Buka file `views.py` di folder `main` lalu buat fungsi baru bernama `show_xml_by_id` dan `show_json_by_id` dengan variabel `data` yang akan menyimpan hasil query data dengan id tertentu yang ada pada `Product`. Tambahkan return function berupa `HttpResponse` yang memiliki paramater data hasil query yang udah diserialisasi menjadi JSON atau XML dan parameter `content_type` yang sesuai dengan format XML atau JSON (format XML: `"application/xml"` atau format JSON: `"application/json"`).
+
+- [x] Membuat routing URL untuk masing-masing `views` yang telah ditambahkan pada poin 2.
+
+    Buka file `urls.py` pada folder `main` dan impor fungsi `create_product, show_xml, show_json` tadi dari `views.py` sekaligus tambahkan path url:
+   ```
+   ...
+   path('create-product', create_product, name='create_product'),
+   path('xml/', show_xml, name='show_xml'),
+   path('json/', show_json, name='show_json')
+   path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
+   path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
+   ...
+   ```
+   ke dalam variabel `urlpatterns` untuk bisa menggunakan fungsi yang sudah diimpor tadi.
+
+- [x] Apa perbedaan antara form `POST` dan form `GET` dalam Django?
+   1. **PENGGUNAAN**
+        * GET
+          
+             Digunakan untuk mengambil data dari server. Data yang dikirimkan melalui metode GET akan muncul dalam URL, sehingga lebih mudah dilihat oleh pengguna dan dapat dibagikan. GET sering digunakan untuk permintaan pencarian atau navigasi halaman web.
+        * POST
+          
+            Digunakan untuk mengirim data ke server. Data yang dikirimkan melalui metode POST tidak terlihat dalam URL, sehingga lebih aman dan sesuai digunakan untuk mengirim data sensitif seperti kata sandi atau informasi pribadi.
+
+   2. **METODE PENGIRIMAN**
+        * GET
+          
+             Data dikirim sebagai parameter dalam URL. Data ini akan terlihat di baris URL dan biasanya digunakan untuk mengirim data yang tidak sensitif, seperti parameter pencarian atau filter.    
+        * POST
+          
+             Data  dikirim sebagai bagian dari permintaan HTTP POST. Data ini tidak akan muncul di URL dan biasanya digunakan untuk mengirim data yang bersifat sensitif atau besar, seperti kata sandi atau unggahan file.
+   3. **KEAMANAN**
+        * GET
+       
+             Kurang aman karena data dikirimkan dalam URL dan dapat terlihat oleh orang lain. Tidak boleh digunakan untuk data sensitif.
+        * POST
+          
+             Lebih aman karena data tidak terlihat dalam URL dan tidak mudah diakses oleh pihak ketiga
+
+   4. **CACHING**
+        * GET
+          
+             GET dapat disimpan dalam cache, karena permintaan GET bersifat idempoten (tidak mengubah data server). Namun, ini juga berarti bahwa permintaan GET dapat disajikan dari cache dan tidak selalu mengambil data terbaru dari server.
+        * POST
+          
+             POST tidak dapat disimpan dalam cache, karena permintaan POST dapat mengubah data server.
+
+- [x] Apa perbedaan utama antara XML, JSON, dan HTML dalam konteks pengiriman data?
+   1. **XML (eXtensible Markup Language)**
+
+         * XML adalah bahasa yang dirancang untuk mendefinisikan struktur dokumen. XML menggunakan tag untuk menandai elemen-elemen dalam dokumen dan menggambarkan hierarki data.
+         * XML biasanya digunakan untuk pertukaran data antar aplikasi dan platform yang berbeda. Ini digunakan dalam berbagai domain, termasuk sebagai format penyimpanan data, konfigurasi, dan dalam protokol web services.
+         * XML digunakan ketika perlu mendefinisikan struktur data yang kompleks, sering kali dengan skema yang telah ditentukan sebelumnya.
+   2. **JSON (JavaScript Object Notation)**
+
+         * JSON adalah format data yang menggunakan pasangan nama dan nilai untuk merepresentasikan objek. Ini lebih mudah dibaca oleh manusia dan lebih sederhana dibandingkan dengan XML.
+         * JSON digunakan untuk pertukaran data antar aplikasi, terutama dalam lingkungan web. Ini adalah format yang umum digunakan dalam komunikasi antara perangkat lunak berbasis JavaScript (seperti aplikasi web) dan server web.
+         * JSON sering digunakan untuk mengirim data dinamis dari server ke browser atau antar server dalam format yang mudah diurai oleh perangkat lunak.
+   3. **HTML (Hypertext Markup Language)**
+         * HTML adalah bahasa markup yang digunakan untuk membuat dokumen web. Ini berfokus pada merepresentasikan konten dan struktur halaman web.
+         * HTML digunakan untuk membuat tampilan halaman web yang dapat diakses oleh pengguna melalui browser web. Ini adalah bahasa yang digunakan untuk mendefinisikan elemen-elemen tampilan web seperti teks, gambar, tautan, formulir, dll.
+         * HTML seringkali digunakan dalam pengembangan web, untuk membuat halaman web yang dapat diakses dan diinterpretasi oleh peramban web. HTML bukan format yang digunakan untuk pertukaran data, melainkan untuk membuat antarmuka pengguna atau UI.
+
+- [x] Mengakses kelima URL di poin 2 menggunakan Postman, membuat screenshot dari hasil akses URL pada Postman, dan menambahkannya ke dalam `README.md`.
+
+   * **HTML**
+        <img width="1728" alt="image" src="https://github.com/topahilangharapan/warkop_kalisetail/assets/117751625/01053ec2-1798-4b63-b054-00aef7dd63d5">
+
+   * **XML**
+        <img width="1728" alt="image" src="https://github.com/topahilangharapan/warkop_kalisetail/assets/117751625/a8faeee9-19d7-4667-81f6-5ba450bce8bd">
+
+   * **JSON**
+        <img width="1728" alt="image" src="https://github.com/topahilangharapan/warkop_kalisetail/assets/117751625/c0226f96-afbb-410f-aa22-83eb68439466">
+
+   * **XML by ID**
+        <img width="1728" alt="image" src="https://github.com/topahilangharapan/warkop_kalisetail/assets/117751625/d250a5fb-a4b3-4dec-b5e1-f4b702fc78f3">
+
+   * **JSON by ID**
+        <img width="1728" alt="image" src="https://github.com/topahilangharapan/warkop_kalisetail/assets/117751625/7d2c10a0-3ac9-4b8c-a44f-f6e62476053d">
+
+     
+   
+   
+        
+        
