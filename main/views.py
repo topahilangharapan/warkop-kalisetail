@@ -13,10 +13,10 @@ def show_main(request):
     products = Product.objects.all()
 
     context = {
-        'appname': 'Warkop Kalisetail',
         'nama': 'Musthofa Joko Anggoro' ,
         'kelas': 'PBP E',
-        'products': products
+        'products': products,
+        'total_products' : products.count()
     }
 
     return render(request, "main.html", context)
