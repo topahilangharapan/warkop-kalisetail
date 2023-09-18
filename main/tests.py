@@ -28,5 +28,3 @@ class mainTest(TestCase):
         max_length = p._meta.get_field('name').max_length
         self.assertEqual(max_length, 255)
 
-    
-
