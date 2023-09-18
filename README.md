@@ -15,11 +15,11 @@ https://warkop-kalisetail.adaptable.app
   ```
   python3 manage.py startapp main
   ```
-  pada direktori utama warkop_kalisetail untuk membuat folder bernama `main` yang berisikan struktur awal aplikasi `main` milik kita. Lalu untuk memasukkan aplikasi `main` yang telah kita buat tadi ke dalam proyek _warkop kalisetail_, kita membuka file `settings.py` dan menambahkan `'main'` (nama aplikasi yang kita buat tadi) pada variabel `INSTALLED_APPS`.
+  pada direktori utama warkop_kalisetail untuk membuat folder bernama `main` yang berisikan struktur awal aplikasi `main` milik kita.
       
 - [x]  **Melakukan routing pada proyek agar dapat menjalankan aplikasi `main`.**
-
-  Kita mengkonfirugasi routing URL proyek warkop_kalisetail dengan menambahkan rute URL `urls.py` pada direktori proyek `shopping_list` yang akan kita hubungkan ke tampilan `main`. Impor fungsi `include` dari `django.urls`, fungsi ini akan mengimpor URL dari aplikasi lain (kasus ini aplikasi `main`) ke dalam file `urls.py` proyek warkop_kalisetail. Tambahkan rute URL `path('main/', include('main.urls'))` pada variabel `urlpatterns`, path URL `'main/'` akan diarahkan ke rute URL yang dibuat tadi pada file `urls.py` di aplikasi `main`. File `urls.py` pada aplikasi `main` bertugas untuk mengatur rute URL spesifik yang dibutuhkan oleh fitur-fitur aplikasi `main` sedangkan `urls.py` pada proyek warkop_kalisetail bertugas untuk mengarahkan rute URL proyek dan akan mengimpor rute URL dari file `urls.py` aplikasi-aplikasi bila dibutuhkan.
+   
+   Untuk memasukkan aplikasi `main` yang telah kita buat tadi ke dalam proyek _warkop kalisetail_, kita membuka file `settings.py` dan menambahkan `'main'` (nama aplikasi yang kita buat tadi) pada variabel `INSTALLED_APPS`.
          
 - [x]  **Membuat model pada aplikasi `main` dengan nama `Item` dan memiliki atribut wajib sebagai berikut.**
       
@@ -46,6 +46,8 @@ https://warkop-kalisetail.adaptable.app
       
 - [x] **Membuat sebuah routing pada `urls.py` aplikasi `main` untuk memetakan fungsi yang telah dibuat pada `views.py`.**
       
+   Kita mengkonfirugasi routing URL proyek warkop_kalisetail dengan menambahkan rute URL `urls.py` pada direktori proyek `warkop_kalisetail` yang akan kita hubungkan ke tampilan `main`. Impor fungsi `include` dari `django.urls`, fungsi ini akan mengimpor URL dari aplikasi lain (kasus ini aplikasi `main`) ke dalam file `urls.py` proyek warkop_kalisetail. Tambahkan rute URL `path('main/', include('main.urls'))` pada variabel `urlpatterns`, path URL `'main/'` akan diarahkan ke rute URL yang dibuat tadi pada file `urls.py` di aplikasi `main`. File `urls.py` pada aplikasi `main` bertugas untuk mengatur rute URL spesifik yang dibutuhkan oleh fitur-fitur aplikasi `main` sedangkan `urls.py` pada proyek warkop_kalisetail bertugas untuk mengarahkan rute URL proyek dan akan mengimpor rute URL dari file `urls.py` aplikasi-aplikasi bila dibutuhkan.
+
   Konfigurasikan routing URL aplikasi `main` yang telah kita buat tadi dengan membuat file `urls.py` pada direktori `main`, file ini yang akan mengatur rute URL milik aplikasi `main`. Impor fungsi `path` dari `django.urls`, fungsi ini berguna untuk membuat URL. Impor juga fungsi `show_main` dari `main.views` untuk menampilkan tampilan ketika URL terkait diakses. Buat nama `app_name` untuk memberikan nama unik pada pola URL pada aplikasi. Gunakan fungsi `show_main` untuk menampilkan URL terkait ketika diakses dengan membuat variabel `urlpatterns` menjadi:
    ```
    urlpatterns = [
@@ -55,7 +57,7 @@ https://warkop-kalisetail.adaptable.app
 
 - [x] **Melakukan deployment ke Adaptable terhadap aplikasi yang sudah dibuat sehingga nantinya dapat diakses oleh teman-temanmu melalui Internet.**
 
-  Pastikan file proyek warkop_kalisetail sudah memiliki repositori di `GitHub` dengan nama `warkop_kalisetail`. Kita buka website Adaptable lalu pilih `Create New App` dan pilih opsi `Connect Git Repository` lalu pilih repository `warkop_kalisetail`, pilih branch `main` lalu pilih `Python App Template` sebagai Deploy Template-nya, Gunakan Database Type `Postgre SQL` dan pilih python version sesuai dengan yang digunakan (`3.11`) dan mengisi start command dengan perintah `python manage.py migrate && gunicorn shopping_list.wsgi`. Masukkan nama aplikasi, yaitu `warkop_kalisetail`, nama ini juga akan menjadi nama domainnya, terakhir centang bagian `HTTP Listener on PORT` dan klik `Deploy App` untuk memulai proses deployment.
+  Pastikan file proyek warkop_kalisetail sudah memiliki repositori di `GitHub` dengan nama `warkop_kalisetail`. Kita buka website Adaptable lalu pilih `Create New App` dan pilih opsi `Connect Git Repository` lalu pilih repository `warkop_kalisetail`, pilih branch `main` lalu pilih `Python App Template` sebagai Deploy Template-nya, Gunakan Database Type `Postgre SQL` dan pilih python version sesuai dengan yang digunakan (`3.11`) dan mengisi start command dengan perintah `python manage.py migrate && gunicorn warkop_kalisetail.wsgi`. Masukkan nama aplikasi, yaitu `warkop_kalisetail`, nama ini juga akan menjadi nama domainnya, terakhir centang bagian `HTTP Listener on PORT` dan klik `Deploy App` untuk memulai proses deployment.
       
 - [x] **Membuat sebuah `README.md` yang berisi tautan menuju aplikasi Adaptable yang sudah di-deploy, serta jawaban dari beberapa pertanyaan berikut.**
 
