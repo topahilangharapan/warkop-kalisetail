@@ -23,10 +23,33 @@
 
     {% for product in products %}
     <tr>
+
+
         <td>{{product.name}}</td>
         <td>{{product.amount}}</td>
         <td>{{product.price}}</td>
         <td>{{product.description}}</td>
+
+        <td>
+            <form method="post" action="{% url 'main:inc_product_amount' product.id %}">
+                {% csrf_token %}
+                <button type="submit">Add One</button>
+            </form>
+        </td>
+
+        <td>
+            <form method="post" action="{% url 'main:dec_product_amount' product.id %}">
+                {% csrf_token %}
+                <button type="submit">Take One</button>
+            </form>
+        </td>
+
+        <td>
+            <form method="post" action="{% url 'main:remove_product' product.id %}">
+                {% csrf_token %}
+                <button type="submit">Remove Menu</button>
+            </form>
+        </td>
     </tr>
     {% endfor %}
 </table>
@@ -36,6 +59,14 @@
 <a href="{% url 'main:create_product' %}">
     <button>
         Add New Product
+    </button>
+</a>
+
+<h5>Sesi terakhir login: {{ last_login }}</h5>
+
+<a href="{% url 'main:logout' %}">
+    <button>
+        Logout
     </button>
 </a>
 
