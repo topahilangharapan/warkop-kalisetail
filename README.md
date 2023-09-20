@@ -172,7 +172,7 @@ https://warkop-kalisetail.adaptable.app
           </body>
       </html>
       ```
-      Buka file `settings.py` yang ada di subdirektori `shopping_list` dan cari variabel `TEMPLATES` lalu tambahkan code ini supaya `base.html` data dideteksi sebagai template:
+      Buka file `settings.py` yang ada di subdirektori `warkop_kalisetail` dan cari variabel `TEMPLATES` lalu tambahkan code ini supaya `base.html` data dideteksi sebagai template:
       ```
       'DIRS': [BASE_DIR / 'templates']
       ```
