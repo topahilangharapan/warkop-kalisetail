@@ -346,6 +346,167 @@ https://warkop-kalisetail.adaptable.app
    * **JSON by ID**
         <img width="1728" alt="image" src="https://github.com/topahilangharapan/warkop_kalisetail/assets/117751625/7d2c10a0-3ac9-4b8c-a44f-f6e62476053d">
 
+## Tugas 4
+- [x] Mengimplementasikan fungsi registrasi, login, dan logout untuk memungkinkan pengguna untuk mengakses aplikasi sebelumnya dengan lancar.
+
+1. **Registrasi**
+   
+   Buka file `views.py` yang ada di folder `main` dan buat fungsi baru dengan nama `register` dan memiliki parameter `request`. Lalu impor `redirect`, `UserCreationForm`, dan `messages`. Isi dari fungsi `register` adalah:
+   ```
+   def register(request):
+    form = UserCreationForm()
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your account has been successfully created!')
+            return redirect('main:login')
+    context = {'form':form}
+    return render(request, 'register.html', context)
+   ```
+   `form = UserCreationForm(request.POST)` untuk membuat variabel `form` yang dimana ia adalah `UserCreationForm` lalu kita masukkan QueryDict sesuai input dari user pada `request.POST`. `form.is_valid()` berguna untuk melakukan validasi pada input form. `form.save()` supaya data dari form dapat tersimpan. User dapat mengetahui apabila berhasil me-register dengan melihat pesan pada web karena kita menggunakan `messages.success(request, 'Your account has been successfully created!')`. Setelah user berhasil mendaftar, user akan kembali dari halaman register, jadi, kita menambahkan kode `return redirect('main:show_main')`.
+   Halaman register akan kita buat dengan file `register.html` yang ada di folder `main/templates` dengan isi:
+   ```
+   {% extends 'base.html' %}
+   
+   {% block meta %}
+       <title>Register</title>
+   {% endblock meta %}
+   
+   {% block content %}  
+   
+   <div class = "login">
+       
+       <h1>Register</h1>  
+   
+           <form method="POST" >  
+               {% csrf_token %}  
+               <table>  
+                   {{ form.as_table }}  
+                   <tr>  
+                       <td></td>
+                       <td><input type="submit" name="submit" value="Daftar"/></td>  
+                   </tr>  
+               </table>  
+           </form>
+   
+       {% if messages %}  
+           <ul>   
+               {% for message in messages %}  
+                   <li>{{ message }}</li>  
+                   {% endfor %}  
+           </ul>   
+       {% endif %}
+   
+   </div>  
+   
+   {% endblock content %}
+   ```
+   Tambahkan path url milik halaman register ke file `urls.py` pada direktori `main` dengan mengimpor fungsi `register` dari `views.py` dan tambahkan `path('register/', register, name='register')` pada variabel `urlpatterns`.
+   
+   
+2. **Login**
+   
+   Buka file `views.py` yang ada di folder `main` dan buat fungsi baru dengan nama `login_user` yang menerima parameter `request`. Lalu impor `authenticate` dan `login`. Isi dari fungsi `login` adalah:
+   ```
+   def login_user(request):
+       if request.method == 'POST':
+           username = request.POST.get('username')
+           password = request.POST.get('password')
+           user = authenticate(request, username=username, password=password)
+           if user is not None:
+               login(request, user)
+               return redirect('main:show_main')
+           else:
+               messages.info(request, 'Sorry, incorrect username or password. Please try again.')
+       context = {}
+       return render(request, 'login.html', context)
+   ```
+   `authenticate(request, username=username, password=password` berguna untuk melakukan autentikasi user dengan menggunakan username dan password yang diterima dari `request` yang dikirim user saat ingin login.
+   Halaman login akan kita buat dengan file `login.html` yang ada di folder `main/templates` dengan isi:
+   ```
+   {% extends 'base.html' %}
+   
+   {% block meta %}
+       <title>Login</title>
+   {% endblock meta %}
+   
+   {% block content %}
+   
+   <div class = "login">
+   
+       <h1>Login</h1>
+   
+       <form method="POST" action="">
+           {% csrf_token %}
+           <table>
+               <tr>
+                   <td>Username: </td>
+                   <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+               </tr>
+                       
+               <tr>
+                   <td>Password: </td>
+                   <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+               </tr>
+   
+               <tr>
+                   <td></td>
+                   <td><input class="btn login_btn" type="submit" value="Login"></td>
+               </tr>
+           </table>
+       </form>
+   
+       {% if messages %}
+           <ul>
+               {% for message in messages %}
+                   <li>{{ message }}</li>
+               {% endfor %}
+           </ul>
+       {% endif %}     
+           
+       Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+   
+   </div>
+   
+   {% endblock content %}
+   ```
+   Tambahkan path url milik halaman login ke file `urls.py` pada direktori `main` dengan mengimpor fungsi `login` dari `views.py` dan tambahkan `path('login/', login_user, name='login')` pada variabel `urlpatterns`.
+
+3. **Logout**
+   
+   Buka file `views.py` yang ada di folder `main` dan buat fungsi baru dengan nama `logout_user` yang menerima parameter `request`. Lalu impor `logout`. Isi dari fungsi `logout_user` adalah:
+   ```
+   def logout_user(request):
+       logout(request)
+       return redirect('main:login')
+   ```
+   `logout(request)` akan menghapus sesi pengguna yang saat ini sudah masuk. Lalu user akan kembali ke halaman login dengan `return redirect('main:login')`.
+   Tambahkan:
+   ```
+   ...
+   <a href="{% url 'main:logout' %}">
+       <button>
+           Logout
+       </button>
+   </a>
+   ...
+   ```
+   Setelah hyperlink tag untuk Add New Product yang ada di file `main.html`.
+   Tambahkan path url milik halaman logout ke file `urls.py` pada direktori `main` dengan mengimpor fungsi `logout_user` dari `views.py` dan tambahkan `path('logout/', logout_user, name='logout')` pada variabel `urlpatterns`.
+   
+   
+
+
+- [x] Membuat dua akun pengguna dengan masing-masing tiga dummy data menggunakan model yang telah dibuat pada aplikasi sebelumnya untuk setiap akun di lokal.
+- [x] Menghubungkan model Item dengan User.
+- [x] Menampilkan detail informasi pengguna yang sedang logged in seperti username dan menerapkan cookies seperti last login pada halaman utama aplikasi.
+- [x] Apa itu Django UserCreationForm, dan jelaskan apa kelebihan dan kekurangannya?
+- [x] Apa perbedaan antara autentikasi dan otorisasi dalam konteks Django, dan mengapa keduanya penting?
+- [x] Apa itu cookies dalam konteks aplikasi web, dan bagaimana Django menggunakan cookies untuk mengelola data sesi pengguna?
+- [x] Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai?
+
      
    
    
