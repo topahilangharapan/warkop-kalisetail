@@ -497,7 +497,14 @@ https://warkop-kalisetail.adaptable.app
    Tambahkan path url milik halaman logout ke file `urls.py` pada direktori `main` dengan mengimpor fungsi `logout_user` dari `views.py` dan tambahkan `path('logout/', logout_user, name='logout')` pada variabel `urlpatterns`.
 
 - [x] Membuat dua akun pengguna dengan masing-masing tiga dummy data menggunakan model yang telah dibuat pada aplikasi sebelumnya untuk setiap akun di lokal.
-      
+
+   Akun pertama:
+   <img width="1728" alt="image" src="https://github.com/topahilangharapan/warkop_kalisetail/assets/117751625/e418e156-ee6b-4dc7-8b7d-0e141cc1c8e2">
+
+   Akun kedua:
+   <img width="1728" alt="image" src="https://github.com/topahilangharapan/warkop_kalisetail/assets/117751625/acece276-6f79-4d8f-bc27-b3b6f3b8c3c3">
+
+
 - [x] Menghubungkan model Item dengan User.
 
    Buka `models.py` yang ada di direktori `main` lalu impor `User` dari `django.contrib.auth.models`. Pada model `Product` yang ada tambahkan kode:
