@@ -609,7 +609,7 @@ https://warkop-kalisetail.adaptable.app
      * Dalam Django, autentikasi umumnya diimplementasikan menggunakan sistem autentikasi bawaan Django, yang mencakup model pengguna (user model) dan berbagai alat untuk mengelola autentikasi, termasuk User model dan formulir autentikasi seperti UserCreationForm dan AuthenticationForm.
      * Autentikasi menghasilkan sesi atau token autentikasi yang digunakan untuk mengidentifikasi pengguna yang sudah masuk dalam sesi selanjutnya. Ini memungkinkan pengguna untuk mengakses bagian tertentu dari aplikasi yang diberikan izin akses.
        
-   * **Otorisasi
+   * **Otorisasi**
 
       * Otorisasi adalah proses untuk mengontrol apa yang diizinkan atau dilarang oleh pengguna yang sudah diotentikasi. Ini berarti menentukan apakah pengguna memiliki izin untuk melakukan tindakan tertentu dalam aplikasi, seperti membaca, menulis, atau menghapus data.
       * Dalam Django, otorisasi biasanya diimplementasikan menggunakan sistem otorisasi berdasarkan peran (role-based) dan izin (permission-based). Anda dapat menetapkan peran kepada pengguna (misalnya, pengguna biasa, admin, atau moderator) dan kemudian memberikan izin kepada peran tersebut untuk melakukan tindakan tertentu di dalam aplikasi.
