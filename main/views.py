@@ -19,7 +19,7 @@ def show_main(request):
     products = Product.objects.filter(user=request.user)
 
     context = {
-        'name': request.user.username,
+        'nama': request.user.username,
         'kelas': 'PBP E',
         'products': products,
         'total_products' : products.count(),

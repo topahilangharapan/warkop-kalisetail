@@ -3,42 +3,128 @@
 {% block meta %}
 <title>Login</title>
 {% endblock meta %}
-
 {% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
-<div class = "login">
 
-    <h1>Login</h1>
+    body {
+        background-color: #FFFDFA;
+    }
 
-    <form method="POST" action="">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>Username: </td>
-                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
-            </tr>
+    .container-login {
+        margin-top: 22vh;
+        margin-right: 15vw;
+        margin-left: 15vw;
+        background-color: #ffffff;
 
-            <tr>
-                <td>Password: </td>
-                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
-            </tr>
+        padding-bottom: 3rem;
+        padding-top: 3rem;
+        padding-right: 3rem;
+        padding-left: 3rem;
 
-            <tr>
-                <td></td>
-                <td><input class="btn login_btn" type="submit" value="Login"></td>
-            </tr>
-        </table>
-    </form>
+        box-shadow: 0px 1rem 2rem #EFEFEF;
+        border-radius: 16px;
 
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+    }
 
-    Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+    .login-header {
+        padding-bottom: 4rem;
+    }
+
+    .warkop-kalisetail {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-weight: 700;
+        text-align: center;
+        color: #252B48;
+        padding-left: 1rem;
+        font-size: 3rem;
+
+        margin-bottom: -0.2rem;
+        
+    }
+
+    .height-kalisetail{
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-weight: 700;
+        text-align: center;
+        color: #252B48;
+        font-size: 1.5rem;
+        color: #DD7339;
+
+    }
+
+    .login-username-input {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-weight: 600;
+
+        padding-bottom: 1rem;
+    }
+
+    .login-password-input {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-weight: 600;
+
+        padding-bottom: 1rem;
+    }
+
+    .login-button{
+        display:block;
+        width:100%;
+        
+
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .register {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-weight: 400;
+        text-align: center;
+    }
+
+</style>
+
+<div class="container-login">
+    <div class = "login-header">
+        <div class="warkop-kalisetail">
+            Warkop Kalisetail
+        </div>
+        <div class="height-kalisetail">
+            + 272 M
+        </div>
+    </div>
+        <form method="POST" action="">
+            {% csrf_token %}
+
+            <div class="login-username-input">
+                Username:
+                <input type="text" name="username" placeholder="Username" class="form-control">
+            </div>
+
+            <div class="login-password-input">
+                Password:
+                <input type="password" name="password" placeholder="Password" class="form-control">
+            </div>
+
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <button class="login-button" type="submit" value="Login">
+                Login
+            </button>
+        </form>
+
+
+        <div class="register">
+            Don't have an account yet?
+            <a href="{% url 'main:register' %}">Register Now</a>
+        </div>
 
 </div>
 
