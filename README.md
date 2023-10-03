@@ -658,3 +658,135 @@ https://warkop-kalisetail.adaptable.app
 
    5. Privasi Pengguna
          Cookies dapat digunakan untuk melacak aktivitas pengguna secara online, yang dapat menciptakan masalah privasi. Oleh karena itu, penting untuk memiliki kebijakan privasi yang jelas dan memberikan pengguna opsi untuk mengontrol cookies.
+      
+## Tugas 5
+
+ - [x] Kustomisasi halaman login, register, dan tambah inventori semenarik mungkin.
+       
+     Pertama, kita mengimpor font "Plus Jakarta Sans" yang terlihat bagus dan cocok dari Google Fonts ke dalam halaman HTML dengan menyalin kode yang mereka berikan dan menempelkannya di bagian atas halaman.
+
+      Kemudian, lanjutkan dengan membuat gaya khusus menggunakan CSS langsung di halaman HTML. Ini memungkinkan kita untuk mengubah warna, bentuk tombol, dan elemen lainnya sesuai dengan keinginan. Misalnya, mengganti font untuk seluruh halaman agar menggunakan "Plus Jakarta Sans", mengubah warna latar belakang, dan menambahkan padding serta margin agar tampilan lebih rapi.
+
+      Selain itu, gunakan display flex dan display grid untuk mengatur tata letak elemen dengan lebih fleksibel dan efisien. Sekaligus kita menambahkan shadow dan radius pada elemen tertentu untuk memberikan sentuhan desain yang lebih menarik dan profesional.
+      
+ - [x] Kustomisasi halaman daftar inventori menjadi lebih berwarna maupun menggunakan apporach lain seperti menggunakan Card.
+
+      Ubah tampilan daftar produk dalam inventori warkop Kalisetail. Sebelumnya, ditampilkan menggunakan tabel, namun saya ubah ke tampilan card yang lebih modern dan estetis.
+
+      Untuk membuat tampilan card ini, saya menggunakan referensi kode card dari Bootstrap.Lalu modifikasi pada kode card tersebut agar sesuai dengan keinginan. Setelah card-card berhasil dibuat sesuai dengan keinginan, saya memasukkan card-card ini ke dalam sebuah container-card. Dengan cara ini, saya dapat mengelompokkan produk-produk tersebut dengan rapi dalam satu wadah.
+
+      Terakhir, untuk menampilkan card-card ini dengan tampilan yang rapi dan dinamis, saya memanfaatkan fitur display grid dan justify evenly. Dengan menggunakan display grid, saya dapat mengatur tata letak card-card ini secara efisien dan memastikan tampilan yang terorganisir. Sementara itu, penggunaan justify evenly membantu agar card-card tersebut tersebar secara merata di dalam container, menciptakan tampilan yang teratur dan menarik. Dengan langkah-langkah ini, saya berhasil menciptakan tampilan yang lebih menarik dan efisien untuk daftar produk inventori warkop Kalisetail.
+       
+ - [x] Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya.
+
+   1. Element Selectors
+      
+         Ini adalah selektor paling dasar dalam CSS, memilih elemen HTML berdasarkan nama elemennya. Contoh:
+         ```
+         p {
+           color: blue;
+         }
+         ```
+         Semua elemen p pada halaman akan memiliki warna teks biru.
+      
+   2. Class Selectors
+      
+         Class adalah atribut yang dapat ditambahkan ke elemen HTML. Elemen dapat dipilih dengan menggunakan selektor kelas. Contoh:
+         ```
+         .highlight {
+           background-color: yellow;
+         }
+         ```
+         Semua elemen dengan class="highlight" akan memiliki latar belakang berwarna kuning.
+   
+   3. ID Selectors
+      
+         ID adalah atribut yang unik pada elemen HTML. Elemen dapat dipilih berdasarkan ID dengan tanda pagar (#). Contoh:
+         ```
+         #header {
+           font-size: 24px;
+         }
+         ```
+         Elemen dengan id="header" akan memiliki ukuran font 24px.
+         
+   4. Pseudo-class Selectors
+
+         Digunakan untuk menargetkan elemen dalam keadaan tertentu atau saat interaksi pengguna, seperti :hover, :active, dan :focus. Contoh:
+         ```
+         a:hover {
+           text-decoration: underline;
+         }
+         ```
+         Ini akan memberikan garis bawah saat kursor berada di atasnya.
+
+   5. Pseudo-element Selectors
+      
+         Pseudo-element digunakan untuk menargetkan dan memodifikasi bagian-bagian spesifik dari elemen. Contoh:
+         ```
+         p::first-line {
+           font-weight: bold;
+         }
+         ```
+         Ini akan membuat baris pertama dalam setiap elemen p menjadi tebal.
+      
+ - [x] Jelaskan HTML5 Tag yang kamu ketahui.
+
+   * !DOCTYPE: Digunakan untuk mendefinisikan jenis dokumen HTML yang digunakan.
+   * html: Menandai awal dan akhir keseluruhan dokumen HTML.
+   * head: Berisi informasi terkait dokumen HTML, seperti meta informasi dan tautan ke stylesheet.
+   * title: Menentukan judul yang akan ditampilkan di bilah judul browser atau tab.
+   * body: Menandai area utama dokumen yang berisi konten yang ditampilkan kepada pengguna.
+   * h1 - h6: Digunakan untuk menandai tingkat kepentingan judul dengan ukuran yang berbeda.
+   * p: Menandai paragraf dalam dokumen.
+   * a: Membuat tautan ke halaman web lain atau alamat email.
+   * img: Menampilkan gambar dalam dokumen HTML.
+   * button: Digunakan untuk membuat tombol yang dapat di-klik oleh pengguna.
+   * div: Menandai sebagian dokumen yang dapat digunakan untuk mengelompokkan dan mengatur elemen-elemen HTML.
+
+ - [x] Jelaskan perbedaan antara margin dan padding.
+
+   * Margin:
+     
+      * Margin adalah ruang di luar elemen, yaitu ruang antara elemen tersebut dengan elemen-elemen lain di sekitarnya.
+      * Margin digunakan untuk mengontrol jarak antara elemen dan elemen-elemen lainnya di dalam layout halaman.
+      * Margin dapat digunakan untuk memberikan jarak vertikal atau horizontal antara elemen-elemen.
+      * Margin dengan nilai negatif dapat digunakan untuk mengalap elemen-elemen.
+        
+   * Padding:
+     
+      * Padding adalah ruang di dalam elemen, yaitu ruang antara batas elemen dan kontennya sendiri.
+      * Padding digunakan untuk mengontrol jarak antara konten elemen dan batas elemen tersebut.
+      * Padding dapat digunakan untuk memberikan ruang di sekitar konten elemen.
+      * Padding tidak mempengaruhi jarak antara elemen-elemen lain di luar elemen tersebut.
+       
+ - [x] Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?
+
+   * Tailwind CSS
+     
+      *  Menggunakan banyak kelas utilitas untuk membangun tampilan. Fleksibel, memerlukan kurva belajar lebih tinggi, dan menghasilkan file CSS yang lebih besar. Bagus jika menginginkan penyesuaian yang tinggi dan ingin mengendalikan setiap aspek tampilan.
+        
+   *  Bootstrap
+     
+      *  Menyediakan komponen dan gaya yang telah dirancang sebelumnya. Lebih mudah dipelajari dan menghasilkan file CSS yang lebih kecil. Cocok jika ingin membangun dengan cepat dan memerlukan banyak komponen siap pakai.
+
+   Kapan Menggunakannya ?
+
+   * Bootstrap: Ketika Anda butuh cepat, nyaman dengan kerangka kerja tradisional, dan membutuhkan banyak komponen.
+
+   * Tailwind CSS: Ketika Anda ingin kontrol yang lebih besar, mengurangi ukuran file, dan suka pendekatan utility-first dalam CSS.
+       
+ - [x] Memberikan warna yang berbeda (teks atau background) pada baris terakhir dari item pada inventori anda menggunakan CSS.
+
+   Pada bagian loop product di file `main.html` (`{% for product in products %}`). Untuk mengecek apakah ini adalah baris terakhir atau item terakhir pada inventori kita tambahkan kode:
+   ```
+   ...
+      {% if forloop.last %}
+         #item_terakhir
+
+      {% else %}
+         #item_selain_terakhir
+
+      {% endif %}
+   ...
+   ```
+   pada bagian #item_terakhir kita ubah style dari card, ubah warna dari background dan fontnya sehingga berbeda dari card sebelumnya.
