@@ -3,9 +3,9 @@
 {% block content %}
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-
     body {
         background-color: #FFFDFA;
+        text-decoration: none;
     }
 
     .navbar {
@@ -83,7 +83,7 @@
     .vertical-divider {
         border-left: 0.125rem solid green;
         border-radius: 16px;
-        border-left-color: #252B48;;
+        border-left-color: #252B48;
         height: 3vh;
     }
 
@@ -114,6 +114,61 @@
         font-size: 1.25rem;
     }
 
+    .container-table {
+        margin-right: 1rem;
+        margin-left: 1rem;
+        margin-bottom: -1.4rem;
+
+        box-shadow: 0px 4px 20px #DDDDDD;
+    }
+
+    .product-table {
+        width: 100%;
+
+        border: 0.1rem solid black;
+        border-collapse: collapse;
+
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-weight: 400;
+        color: #252B48;
+
+    
+    }
+    .table-head-amount, .table-field-amount {
+        text-align: center;
+        padding-right: 1rem;
+    }
+
+    th {
+        font-size: 1.1rem;
+        border: 0.1rem solid black;
+        border-collapse: collapse;
+        text-align: center;
+        background-color: #DD7339;
+        color: #FFFDFA;
+    }
+
+    td {
+        border-left: 0.1rem solid black;
+        border-collapse: collapse;
+        padding-left: 0.4rem;
+    }
+
+    tr:last-child{
+        background-color: #DD7339;
+        color: #FFFDFA;
+    }
+    .table-field-description {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .table-product-edit {
+        justify-self: end;
+        padding-right: 0.4rem;
+        text-decoration: none;
+    }
+
+
 </style>
 
 <nav class="navbar">
@@ -140,87 +195,196 @@
     <div class="total-menu">
         <p>Total Menu: {{ total_products }}</p>
     </div>
+
     <div class="button-add">
-        <a href="{% url 'main:create_product' %}">
-            <button>
-                Add New Product
-            </button>
-        </a>
+<!--        <a href="{% url 'main:create_product' %}">-->
+<!--            <button>-->
+<!--                Add New Product-->
+<!--            </button>-->
+<!--        </a>-->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add Product by AJAX
+        </button>
     </div>
 </div>
 
+<div class="container-table">
+    <table class="product-table" id="product_table"></table>
+</div>
+<!--<div class="container-cards">-->
+<!--    <div class="cards">-->
+<!--    {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}-->
+<!--    {% for product in products %}-->
+<!--        {% if forloop.last %}-->
+<!--            <div class="card" style="width: 18rem; background-color: #DD7339; color: #FFFDFA">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-product-title">{{product.name}}</h5>-->
+<!--                    <p class="card-product-stock">In Stock: {{product.amount}}</p>-->
+<!--                    <p class="card-product-price">Rp{{product.price}}</p>-->
+<!--                    <p class="card-product-description">{{product.description}}.</p>-->
+<!--                    <table>-->
+<!--                        <td>-->
+<!--                            <form method="post" action="{% url 'main:inc_product_amount' product.id %}">-->
+<!--                                {% csrf_token %}-->
+<!--                                <button type="submit">Add One</button>-->
+<!--                            </form>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <form method="post" action="{% url 'main:dec_product_amount' product.id %}">-->
+<!--                                {% csrf_token %}-->
+<!--                                <button type="submit">Take One</button>-->
+<!--                            </form>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <form method="post" action="{% url 'main:remove_product' product.id %}">-->
+<!--                                {% csrf_token %}-->
+<!--                                <button type="submit">Remove Menu</button>-->
+<!--                            </form>-->
+<!--                        </td>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        {% else %}-->
+<!--            <div class="card" style="width: 18rem;">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-product-title">{{product.name}}</h5>-->
+<!--                    <p class="card-product-stock">In Stock: {{product.amount}}</p>-->
+<!--                    <p class="card-product-price">Rp{{product.price}}</p>-->
+<!--                    <p class="card-product-description">{{product.description}}.</p>-->
+<!--                    <table>-->
+<!--                        <td>-->
+<!--                            <form method="post" action="{% url 'main:inc_product_amount' product.id %}">-->
+<!--                                {% csrf_token %}-->
+<!--                                <button type="submit">Add One</button>-->
+<!--                            </form>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <form method="post" action="{% url 'main:dec_product_amount' product.id %}">-->
+<!--                                {% csrf_token %}-->
+<!--                                <button type="submit">Take One</button>-->
+<!--                            </form>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <form method="post" action="{% url 'main:remove_product' product.id %}">-->
+<!--                                {% csrf_token %}-->
+<!--                                <button type="submit">Remove Menu</button>-->
+<!--                            </form>-->
+<!--                        </td>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        {% endif %}-->
+<!--    {% endfor %}-->
+<!--    </div>-->
+<!--</div>-->
 
-<div class="container-cards">
-    <div class="cards">
-    {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
-    {% for product in products %}
-        {% if forloop.last %}
-            <div class="card" style="width: 18rem; background-color: #DD7339; color: #FFFDFA">
-                <div class="card-body">
-                    <h5 class="card-product-title">{{product.name}}</h5>
-                    <p class="card-product-stock">In Stock: {{product.amount}}</p>
-                    <p class="card-product-price">Rp{{product.price}}</p>
-                    <p class="card-product-description">{{product.description}}.</p>
-                    <table>
-                        <td>
-                            <form method="post" action="{% url 'main:inc_product_amount' product.id %}">
-                                {% csrf_token %}
-                                <button type="submit">Add One</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="post" action="{% url 'main:dec_product_amount' product.id %}">
-                                {% csrf_token %}
-                                <button type="submit">Take One</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="post" action="{% url 'main:remove_product' product.id %}">
-                                {% csrf_token %}
-                                <button type="submit">Remove Menu</button>
-                            </form>
-                        </td>
-                    </table>
-                </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        {% else %}
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-product-title">{{product.name}}</h5>
-                    <p class="card-product-stock">In Stock: {{product.amount}}</p>
-                    <p class="card-product-price">Rp{{product.price}}</p>
-                    <p class="card-product-description">{{product.description}}.</p>
-                    <table>
-                        <td>
-                            <form method="post" action="{% url 'main:inc_product_amount' product.id %}">
-                                {% csrf_token %}
-                                <button type="submit">Add One</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="post" action="{% url 'main:dec_product_amount' product.id %}">
-                                {% csrf_token %}
-                                <button type="submit">Take One</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="post" action="{% url 'main:remove_product' product.id %}">
-                                {% csrf_token %}
-                                <button type="submit">Remove Menu</button>
-                            </form>
-                        </td>
-                    </table>
-                </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="col-form-label">Amount:</label>
+                        <input type="number" class="form-control" id="amount" name="amount"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="col-form-label">Price:</label>
+                        <input type="number" class="form-control" id="price" name="price"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+                </form>
             </div>
-        {% endif %}
-    {% endfor %}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+            </div>
+        </div>
     </div>
 </div>
+
 <br />
 
 <div class="last-login">
     <p>last login: {{ last_login }}</p>
 </div>
+
+<script>
+    async function getProducts() {
+        return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+    }
+
+    async function refreshProducts() {
+        document.getElementById("product_table").innerHTML = ""
+        const products = await getProducts()
+        let htmlString = `<tr>
+            <th>Name</th>
+            <th class="table-head-amount">Amount</th>
+            <th>Price</th>
+            <th>Description</th>
+
+        </tr>`
+        products.forEach((item) => {
+            htmlString += `\n<tr>
+            <td>${item.fields.name}</td>
+            <td class="table-field-amount">${item.fields.amount}</td>
+            <td>Rp ${item.fields.price}</td>
+            <td class="table-field-description">
+                <div class="table-field-description-value">
+                    ${item.fields.description}
+                </div>
+                <div class="table-product-edit">
+                     <a href="inc_product_amount/${item.pk}">
+                        <button>
+                            Add
+                        </button>
+                    <a/>
+
+                    <a href="dec_product_amount/${item.pk}">
+                        <button>
+                            Take One
+                        </button>
+                    </a>
+
+                    <a href="remove_product/${item.pk}">
+                        <button>
+                            Remove
+                        </button>
+                    </a>
+                </div>
+            </td>
+
+        </tr>`
+        })
+
+        document.getElementById("product_table").innerHTML = htmlString
+    }
+
+    refreshProducts()
+
+    function addProduct() {
+        fetch("{% url 'main:add_product_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshProducts)
+
+        document.getElementById("form").reset()
+        return false
+    }
+
+    document.getElementById("button_add").onclick = addProduct
+</script>
 
 {% endblock content %}
 
