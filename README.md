@@ -963,3 +963,89 @@ https://warkop-kalisetail.adaptable.app
                  document.getElementById("product_table").innerHTML = htmlString
              }
             ```
+   - [x] Melakukan perintah `collectstatic`.
+      
+      Pada `settings.py` tambahkan:
+      ```
+      STATIC_URL = 'static/'
+
+      STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+      ```
+      Lalu jalankan `python3 manage.py collectstatic`
+
+* Jelaskan perbedaan antara asynchronous programming dengan synchronous programming.
+
+   * **Synchronous Programming**
+
+      1. Sequential Execution: Dalam Synchronous Programming, tugas atau operasi dieksekusi secara berurutan, satu per satu. Program akan menunggu satu tugas selesai sebelum melanjutkan ke tugas berikutnya.
+      2. Blocking: Jika ada tugas atau operasi memakan waktu, program akan terblokir (blocking). Artinya, program akan berhenti bekerja atau tidak responsif selama tugas tersebut sedang berjalan.
+      3. Sederhana: Synchronous programming lebih mudah dipahami dan di-debug karena alur eksekusinya linear dan berurutan.
+      4. Tidak Efisien: Dalam aplikasi yang harus menangani banyak operasi bersamaan, synchronous programming mungkin kurang efisien dalam pengelolaan sumber daya.
+         
+   * **Asynchronous Programming**
+      1. Concurrent Execution: Dalam Asynchronous Programming, tugas atau operasi dapat dieksekusi secara bersamaan. Program tidak perlu menunggu tugas selesai sebelum melanjutkan ke tugas berikutnya.
+      2. Non-blocking: Program tidak terblokir saat tugas atau operasi yang memakan waktu. Sebaliknya, program melanjutkan eksekusi dan mungkin kembali ke tugas tersebut ketika sudah selesai.
+      3. Kompleks: Asynchronous programming bisa lebih kompleks karena Anda perlu mengelola alur eksekusi dan menangani callback atau promise untuk menangani tugas yang belum selesai.
+      4. Efisien dalam Mengelola Sumber Daya: Pemrograman asinkron dapat lebih efisien dalam mengelola sumber daya karena program dapat melanjutkan bekerja pada tugas lain saat tugas yang memakan waktu sedang berjalan.
+
+* Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma event-driven programming. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
+   Paradigma event-driven programming adalah cara berpikir dalam pemrograman yang berfokus pada penggunaan peristiwa (events) sebagai pemicu eksekusi kode. Dalam paradigma ini, program tidak dieksekusi secara berurutan dari atas ke bawah seperti dalam pemrograman berbasis prosedur yang tradisional. Sebaliknya, program menunggu peristiwa tertentu terjadi, dan ketika peristiwa tersebut terjadi, kode yang sesuai akan dijalankan.
+   Contoh penerapannya dalam tugas ini ada ketika kita menggunakan button untuk menjalankan fungsi `addProduct()`, kita menggunakan onclick dari `button_add` sebagai event yang menjalankan `addProduct()`.
+
+* Jelaskan penerapan asynchronous programming pada AJAX.
+
+  1. XMLHttpRequest Object atau Fetch API: Objek XMLHttpRequest atau Fetch API digunakan untuk membuat permintaan HTTP asynchronous ke server.
+  2. Callback Functions: Untuk menangani respons dari server,digunakan callback functions. Fungsi-fungsi ini dijalankan ketika respons dari server telah tiba. Contoh callback functions dalam AJAX adalah .success(), .error(), dan .done() yang digunakan untuk menangani berbagai kondisi seperti respons sukses, kesalahan, atau penyelesaian permintaan.
+  3. Promise: Promise adalah objek yang mewakili nilai yang mungkin akan tersedia di masa depan (ketika tugas atau operasi sudah selesai). Dengan promise, Anda dapat menjalankan kode setelah permintaan selesai, baik berhasil maupun gagal.
+  4. Non-blocking: Kode JavaScript tetap responsif dan tidak terblokir selama proses pengiriman permintaan ke server atau saat menunggu respons dari server. Ini memungkinkan aplikasi web untuk tetap berfungsi dengan baik tanpa terasa "menggantung" saat menunggu respons dari server.
+
+* Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada library jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
+
+  1. Fetch API:
+
+      * Native JavaScript: Fetch API adalah bagian dari JavaScript yang disediakan secara native oleh browser modern.
+      * Promise-Based: Fetch API menggunakan promise, yang membuatnya lebih mudah untuk menangani permintaan asinkron dan meresponsnya dengan jelas.
+      * Lebih Ringan: Fetch API lebih ringan daripada jQuery karena fokus pada AJAX dan tidak memiliki fitur-fitur lain yang dimiliki oleh jQuery.
+      * Terbaru: Fetch API merupakan teknologi terbaru yang diperbarui dan dikelola oleh W3C, sehingga Anda dapat mengharapkan perkembangan dan dukungan yang baik dari browser modern.
+
+   2. jQuery:
+
+      * Kompatibilitas: jQuery dirancang seragam dan mudah digunakan di semua browser, termasuk yang lebih lama. Ini memastikan kompatibilitas lintas browser yang baik.
+      * Plugin: jQuery memiliki banyak plugin yang dapat digunakan untuk berbagai keperluan, termasuk animasi, manipulasi DOM, dan banyak lagi. Ini bisa menghemat waktu dalam pengembangan.
+      * Sintaks Yang Mudah Dipahami: jQuery sering dianggap lebih mudah dipelajari dan dimengerti oleh pemula karena memiliki sintaks yang lebih sederhana daripada Fetch API.
+     
+   Saya berpendapat bahwa Fetch API lebih baik daripada jQuery karena Fetch API fokus pada AJAX dan tidak memiliki fitur tambahan yang dimiliki jQuery, sehingga lebih ringan dalam penggunaan memori dan kecepatan. ia juga merupakan bagian dari JavaScript yang tersedia secara native di browser modern. Digunakannya promise untuk menangani permintaan asinkron dengan cara yang lebih jelas dan mudah dipahami. Fetch API adalah Teknologi terbaru sehingga dapat diharapkan perkembangan dan dukungan yang baik dari browser modern. Menggunakan Fetch API, kita memiliki kontrol yang lebih besar terhadap permintaan dan respons HTTP, memungkinkan pengoptimalan yang lebih baik.
+
+- [x] Menambahkan fungsionalitas hapus dengan menggunakan AJAX DELETE
+
+   Buat fungsi baru di `views.py`:
+   ```
+   @csrf_exempt
+   def delete_product_ajax(request, id):
+       product = Product.objects.get(pk=id)
+       product.delete()
+       response = HttpResponseRedirect(reverse("main:show_main"))
+       return response
+   ```
+   Tambahkan routing untuk fungsi tersebut dengan mengimpor `delete_product_ajax` dan menambahkan path url baru di `urls.py`:
+   ```
+   path('delete_product_ajax/<int:id>', delete_product_ajax, name='delete_product_ajax')
+   ```
+   Buat button di `main.html` sebagai pembuat events:
+   ```
+   <button type="button" class="btn btn-primary" id="button_delete" onClick="deleteProduct(${item.pk})">
+      Remove
+   </button>
+   ```
+   Events yang dibuat oleh buttont tersebut akan memicu eksekusi kode fungsi `deleteProduct(id)` yang ada di `<script>` pada `main.html` sebagai berikut:
+   ```
+   function deleteProduct(pk) {
+        var action = confirm("Are you sure you want to delete this product?");
+        if (action) {
+            fetch(`/delete_product_ajax/${pk}`, {
+                method: 'DELETE',
+            }).then(refreshProducts);
+            alert("product has been deleted");
+        }
+   }
+   ```
