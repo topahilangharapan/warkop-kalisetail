@@ -790,3 +790,176 @@ https://warkop-kalisetail.adaptable.app
    ...
    ```
    pada bagian #item_terakhir kita ubah style dari card, ubah warna dari background dan fontnya sehingga berbeda dari card sebelumnya.
+
+## Tugas 6
+
+- [x]  Mengubah tugas 5 yang telah dibuat sebelumnya menjadi menggunakan AJAX.
+      
+   - [x] AJAX GET
+         
+      - [x] Ubahlah kode tabel data item agar dapat mendukung AJAX GET.
+
+         Sebelumnya pada `main.html` saya menggunakan cards untuk menampilkan list product, ubah menjadi:
+         ```
+         <table class="product-table" id="product_table"></table>
+         ```
+      
+      - [x] Lakukan pengambilan task menggunakan AJAX GET.
+
+         Buat fungsi di `views.py`:
+         ```
+         def get_product_json(request):
+          product_item = Product.objects.all()
+          return HttpResponse(serializers.serialize('json', product_item))
+         ```
+         Buat routing di `urls.py`, impor `get_product_json` dan tambahkan:
+         ```
+         path('get-product/', get_product_json, name='get_product_json'),
+         ```
+         Tambahkan `<script>` di `main.html`:
+         ```
+          async function getProducts() {
+              return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+          }
+         ```
+         
+      - [x] AJAX POST
+            
+         - [x] Buatlah sebuah tombol yang membuka sebuah modal dengan form untuk menambahkan item.
+        
+            Buat modal:
+            ```
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form" onsubmit="return false;">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="name" class="col-form-label">Name:</label>
+                                    <input type="text" class="form-control" id="name" name="name"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="price" class="col-form-label">Amount:</label>
+                                    <input type="number" class="form-control" id="amount" name="amount"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="price" class="col-form-label">Price:</label>
+                                    <input type="number" class="form-control" id="price" name="price"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="col-form-label">Description:</label>
+                                    <textarea class="form-control" id="description" name="description"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ```
+            Buat tombol untuk membuka modal:
+            ```
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add Product by AJAX
+            </button>
+            ```
+
+         - [x] Buatlah fungsi view baru untuk menambahkan item baru ke dalam basis data.
+           
+            Pada `views.py` impor `from django.views.decorators.csrf import csrf_exempt` dan buat fungsi:
+            ```
+            @csrf_exempt
+            def add_product_ajax(request):
+                if request.method == 'POST':
+                    name = request.POST.get("name")
+                    amount = request.POST.get("amount")
+                    price = request.POST.get("price")
+                    description = request.POST.get("description")
+                    user = request.user
+            
+                    new_product = Product(name=name,amount=amount, price=price, description=description, user=user)
+                    new_product.save()
+            
+                    return HttpResponse(b"CREATED", status=201)
+                return HttpResponseNotFound()
+            ```
+
+         - [x] Buatlah path /create-ajax/ yang mengarah ke fungsi view yang baru kamu buat.
+           
+            Pada `urls.py` impor `add_product_ajax` dan tambahkan path url:
+            ```
+            path('create-ajax/', add_product_ajax, name='add_product_ajax'),
+            ```
+
+         - [x] Hubungkan form yang telah kamu buat di dalam modal kamu ke path /create-ajax/.
+           
+            Pada `main.html` buat fungsi di`<script>`:
+            ```
+            function addProduct() {
+                 fetch("{% url 'main:add_product_ajax' %}", {
+                     method: "POST",
+                     body: new FormData(document.querySelector('#form'))
+                 }).then(refreshProducts)
+         
+                 document.getElementById("form").reset()
+                 return false
+             }
+         
+             document.getElementById("button_add").onclick = addProduct
+            ```
+
+         - [x] Lakukan refresh pada halaman utama secara asinkronus untuk menampilkan daftar item terbaru tanpa reload halaman utama secara keseluruhan.
+           
+            Pada `main.html` buat fungsi di`<script>`:
+            ```
+            async function refreshProducts() {
+                 document.getElementById("product_table").innerHTML = ""
+                 const products = await getProducts()
+                 let htmlString = `<tr>
+                     <th>Name</th>
+                     <th class="table-head-amount">Amount</th>
+                     <th>Price</th>
+                     <th>Description</th>
+         
+                 </tr>`
+                 products.forEach((item) => {
+                     htmlString += `\n<tr>
+                     <td>${item.fields.name}</td>
+                     <td class="table-field-amount">${item.fields.amount}</td>
+                     <td>Rp ${item.fields.price}</td>
+                     <td class="table-field-description">
+                         <div class="table-field-description-value">
+                             ${item.fields.description}
+                         </div>
+                         <div class="table-product-edit">
+                              <a href="inc_product_amount/${item.pk}">
+                                 <button>
+                                     Add
+                                 </button>
+                             <a/>
+         
+                             <a href="dec_product_amount/${item.pk}">
+                                 <button>
+                                     Take One
+                                 </button>
+                             </a>
+                             <button type="button" class="btn btn-primary" id="button_delete" onClick="deleteProduct(${item.pk})">
+                                 Remove
+                             </button>
+                         </div>
+                     </td>
+         
+                 </tr>`
+                 })
+         
+                 document.getElementById("product_table").innerHTML = htmlString
+             }
+            ```
