@@ -131,3 +131,10 @@ def add_product_ajax(request):
 
         return HttpResponse(b"CREATED", status=201)
     return HttpResponseNotFound()
+
+@csrf_exempt
+def delete_product_ajax(request, id):
+    product = Product.objects.get(pk=id)
+    product.delete()
+    response = HttpResponseRedirect(reverse("main:show_main"))
+    return response
