@@ -1,8 +1,7 @@
 # Warkop Kalisetail
 **Selamat datang di warkop _Stasiun Kalisetail_ (+272m)**
 
-## Tautan PaaS PBP Fasilkom UI
-musthofa-joko-tugas.pbp.cs.ui.ac.id
+## [Tautan PaaS PBP Fasilkom UI](musthofa-joko-tugas.pbp.cs.ui.ac.id)
 
 ## Tugas 2
 - [x] **Membuat sebuah proyek Django baru.**
