@@ -983,12 +983,14 @@ https://warkop-kalisetail.adaptable.app
       4. Tidak Efisien: Dalam aplikasi yang harus menangani banyak operasi bersamaan, synchronous programming mungkin kurang efisien dalam pengelolaan sumber daya.
          
    * **Asynchronous Programming**
+     
       1. Concurrent Execution: Dalam Asynchronous Programming, tugas atau operasi dapat dieksekusi secara bersamaan. Program tidak perlu menunggu tugas selesai sebelum melanjutkan ke tugas berikutnya.
       2. Non-blocking: Program tidak terblokir saat tugas atau operasi yang memakan waktu. Sebaliknya, program melanjutkan eksekusi dan mungkin kembali ke tugas tersebut ketika sudah selesai.
       3. Kompleks: Asynchronous programming bisa lebih kompleks karena Anda perlu mengelola alur eksekusi dan menangani callback atau promise untuk menangani tugas yang belum selesai.
       4. Efisien dalam Mengelola Sumber Daya: Pemrograman asinkron dapat lebih efisien dalam mengelola sumber daya karena program dapat melanjutkan bekerja pada tugas lain saat tugas yang memakan waktu sedang berjalan.
 
 * Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma event-driven programming. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
+
    Paradigma event-driven programming adalah cara berpikir dalam pemrograman yang berfokus pada penggunaan peristiwa (events) sebagai pemicu eksekusi kode. Dalam paradigma ini, program tidak dieksekusi secara berurutan dari atas ke bawah seperti dalam pemrograman berbasis prosedur yang tradisional. Sebaliknya, program menunggu peristiwa tertentu terjadi, dan ketika peristiwa tersebut terjadi, kode yang sesuai akan dijalankan.
    Contoh penerapannya dalam tugas ini ada ketika kita menggunakan button untuk menjalankan fungsi `addProduct()`, kita menggunakan onclick dari `button_add` sebagai event yang menjalankan `addProduct()`.
 
