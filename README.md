@@ -797,11 +797,11 @@ musthofa-joko-tugas.pbp.cs.ui.ac.id
       
    - [x] AJAX GET
          
-      - [x] Ubahlah kode tabel data item agar dapat mendukung AJAX GET.
+      - [x] Ubahlah kode cards data item agar dapat mendukung AJAX GET.
 
-         Sebelumnya pada `main.html` saya menggunakan cards untuk menampilkan list product, ubah menjadi:
+         Pada `main.html` saya menggunakan cards untuk menampilkan list product, ubah menjadi:
          ```
-         <table class="product-table" id="product_table"></table>
+         <card class="product-cards" id="product_cards"></card>
          ```
       
       - [x] Lakukan pengambilan task menggunakan AJAX GET.
@@ -907,7 +907,7 @@ musthofa-joko-tugas.pbp.cs.ui.ac.id
                  fetch("{% url 'main:add_product_ajax' %}", {
                      method: "POST",
                      body: new FormData(document.querySelector('#form'))
-                 }).then(refreshProducts)
+                 }).then(refreshProductsCards)
          
                  document.getElementById("form").reset()
                  return false
@@ -920,48 +920,79 @@ musthofa-joko-tugas.pbp.cs.ui.ac.id
            
             Pada `main.html` buat fungsi di`<script>`:
             ```
-            async function refreshProducts() {
-                 document.getElementById("product_table").innerHTML = ""
+            async function refreshProductsCards() {
+                 document.getElementById("product_cards").innerHTML = ""
                  const products = await getProducts()
-                 let htmlString = `<tr>
-                     <th>Name</th>
-                     <th class="table-head-amount">Amount</th>
-                     <th>Price</th>
-                     <th>Description</th>
-         
-                 </tr>`
+                 let count = 0
+                 let htmlString = `<div class="container-cards"> \n <div class="cards">`
                  products.forEach((item) => {
-                     htmlString += `\n<tr>
-                     <td>${item.fields.name}</td>
-                     <td class="table-field-amount">${item.fields.amount}</td>
-                     <td>Rp ${item.fields.price}</td>
-                     <td class="table-field-description">
-                         <div class="table-field-description-value">
-                             ${item.fields.description}
-                         </div>
-                         <div class="table-product-edit">
-                              <a href="inc_product_amount/${item.pk}">
-                                 <button>
-                                     Add
-                                 </button>
-                             <a/>
-         
-                             <a href="dec_product_amount/${item.pk}">
-                                 <button>
-                                     Take One
-                                 </button>
-                             </a>
-                             <button type="button" class="btn btn-primary" id="button_delete" onClick="deleteProduct(${item.pk})">
-                                 Remove
-                             </button>
-                         </div>
-                     </td>
-         
-                 </tr>`
+                     if (count == products.length-1) {
+                         htmlString += `
+                         <div class="card" style="width: 18rem; background-color: #DD7339; color: #FFFDFA">
+                             <div class="card-body">
+                                 <h5 class="card-product-title">${item.fields.name}</h5>
+                                 <p class="card-product-stock">In Stock: ${item.fields.amount}</p>
+                                 <p class="card-product-price">Rp ${item.fields.price}</p>
+                                 <p class="card-product-description">${item.fields.description}.</p>
+                                 <table>
+                                     <td>
+                                         <form method="post" action="inc_product_amount/${item.pk}">
+                                             {% csrf_token %}
+                                             <button type="submit">Add One</button>
+                                         </form>
+                                     </td>
+                                     <td>
+                                         <form method="post" action="dec_product_amount/${item.pk}">
+                                             {% csrf_token %}
+                                             <button type="submit">Take One</button>
+                                         </form>
+                                     </td>
+                                     <td>
+                                         <button type="button" class="btn btn-primary" id="button_delete" onClick="deleteProduct(${item.pk})">
+                                         Remove Menu
+                                         </button>
+                                     </td>
+                                 </table>
+                             </div>
+                         </div>`
+                     }
+                     else {
+                         htmlString += `
+                         <div class="card" style="width: 18rem;">
+                             <div class="card-body">
+                                 <h5 class="card-product-title">${item.fields.name}</h5>
+                                 <p class="card-product-stock">In Stock: ${item.fields.amount}</p>
+                                 <p class="card-product-price">Rp ${item.fields.price}</p>
+                                 <p class="card-product-description">${item.fields.description}.</p>
+                                 <table>
+                                     <td>
+                                         <form method="post" action="inc_product_amount/${item.pk}">
+                                             {% csrf_token %}
+                                             <button type="submit">Add One</button>
+                                         </form>
+                                     </td>
+                                     <td>
+                                         <form method="post" action="dec_product_amount/${item.pk}">
+                                             {% csrf_token %}
+                                             <button type="submit">Take One</button>
+                                         </form>
+                                     </td>
+                                     <td>
+                                         <button type="button" class="btn btn-primary" id="button_delete" onClick="deleteProduct(${item.pk})">
+                                         Remove Menu
+                                         </button>
+                                     </td>
+                                 </table>
+                             </div>
+                         </div>`
+                     }
+                     count+=1
                  })
+                 htmlString += `</div> \n </div>`
          
-                 document.getElementById("product_table").innerHTML = htmlString
-             }
+                 document.getElementById("product_cards").innerHTML = htmlString
+                 document.getElementById("total_menu").innerHTML = `<p>Total Menu: ${products.length}</p>`
+            }
             ```
    - [x] Melakukan perintah `collectstatic`.
       
@@ -1046,7 +1077,7 @@ musthofa-joko-tugas.pbp.cs.ui.ac.id
         if (action) {
             fetch(`/delete_product_ajax/${pk}`, {
                 method: 'DELETE',
-            }).then(refreshProducts);
+            }).then(refreshProductsCards);
             alert("product has been deleted");
         }
    }
